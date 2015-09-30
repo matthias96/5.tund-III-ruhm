@@ -13,12 +13,51 @@
 	}
    $number_plate= $color= "";
    $number_plate_error=$color_error= "";
+   if($_SERVER["REQUEST_METHOD"] == "POST") {
+
    
-   if(isset($_POST["add_plate"])){
-	   echo "vajutati nuppu";
+		if(isset($_POST["add_plate"])){
+
+			if ( empty($_POST["number_plate"])) {
+				$number_plate_error = "See väli on kohustuslik";
+			}else{
+        
+				$number_plate = cleanInput($_POST["number_plate"]);
+			}
+
+			if ( empty($_POST["color"]) ) {
+				$color_error = "See väli on kohustuslik";
+			}else{
+				$color = cleanInput($_POST["color"]);
+			}
+
+     
+			if($number_plate_error == "" && $color_error == ""){
+				echo "Salvestatud! Numbrimärk on ".$number_plate." ja värv on ".$color. ".";
+				$m= createNumberPlate($number_plate, $color);
+				
+				if($m !=""){
+					
+					$number_plate="";
+					$color="";
+				}
+				
+			}
+		}		
+   
+	   
+	 
 	   
 	   
    }
+   function cleanInput($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+	
+	getAllData();
    
  ?> 
  <p>Tere, <?=$_SESSION["logged_in_user_email"];?>
@@ -33,5 +72,3 @@
   	<input id="color" name="color" type="text"  value="<?php echo $color; ?>"> <?php echo $color_error; ?><br><br>
   	<input type="submit" name="add_plate" value="Salvesta">
   </form>	
-	
-	

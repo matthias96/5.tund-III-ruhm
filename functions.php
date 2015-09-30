@@ -48,8 +48,43 @@
 		$mysqli->close();
 	   
    }
-    
-	// Paneme ühenduse kinni
+   
+   function createNumberPlate($car_plate,$car_color){
+    $mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+        $stmt = $mysqli->prepare("INSERT INTO car_plates (user_id, number_plate, color) VALUES (?,?,?)");
+        
+        $stmt->bind_param("iss", $_SESSION['logged_in_user_id'], $car_plate, $car_color);
+        
+        $message = "";
+        
+   
+        if($stmt->execute()){
+      
+            $message = "Edukalt andmebaasi salvestatud!";
+        }
+        
+        $stmt->close();
+        $mysqli->close();
+    }
+	 function getAllData(){
+        
+        $mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+        $stmt = $mysqli->prepare("SELECT id, user_id, number_plate, color FROM car_plates");
+        $stmt->bind_result($id_from_db, $user_id_from_db, $number_plate_from_db, $color_from_db);
+        $stmt->execute();
+        
+      
+        
+       
+        while($stmt->fetch()){
+            
+            echo($user_id_from_db);
+            
+        }
+        
+        $stmt->close();
+        $mysqli->close();
+    }
 	
     
  ?>
