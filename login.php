@@ -1,13 +1,6 @@
 <?php
-    require_once("functions.php");
-    
-    //kui kasutaja on sisse logitud, suuna teisele lehele
-    //kontrollin kas sessiooni muutuja olemas
-    if(isset($_SESSION['logged_in_user_id'])){
-        header("Location: data.php");
-    }
 
-
+	require_once("functions.php");
   // muuutujad errorite jaoks
 	$email_error = "";
 	$password_error = "";
@@ -43,13 +36,14 @@
 
       // Kui oleme siia jõudnud, võime kasutaja sisse logida
 			if($password_error == "" && $email_error == ""){
-				//echo "Võib sisse logida! Kasutajanimi on ".$email." ja parool on ".$password;
+				echo "Võib sisse logida! Kasutajanimi on ".$email." ja parool on ".$password;
+				
+				$hash = hash("sha512", $password );
+				loginUser();
+				
+				
 			
-                $hash = hash("sha512", $password);
-                
-                loginUser($email, $hash);
-            
-            }
+			}
 
 		} // login if end
 
@@ -73,22 +67,23 @@
 					$create_password = cleanInput($_POST["create_password"]);
 				}
 			}
-
+		
 			if(	$create_email_error == "" && $create_password_error == ""){
-				//echo hash("sha512", $create_password);
-                //echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password;
-                
-                // tekitan parooliräsi
-                $hash = hash("sha512", $create_password);
-                
-                //functions.php's funktsioon
-                createUser($create_email, $hash);
-                
-                
-            }
+				
+				//räsi loomine
+				
+				$hash = hash("sha512", $create_password);
+				
+				echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password."ja räsi on".$hash;
+				
+				createUser();
+				
+				
+				//asendame ? märgid, ss -s on string email, s on string password
+			}
 
-        } // create if end
-
+		} // create if end
+	
 	}
 
   // funktsioon, mis eemaldab kõikvõimaliku üleliigse tekstist
@@ -98,7 +93,8 @@
   	$data = htmlspecialchars($data);
   	return $data;
   }
-  
+
+	
 ?>
 <!DOCTYPE html>
 <html>
