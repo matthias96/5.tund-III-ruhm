@@ -36,10 +36,10 @@
 
       // Kui oleme siia jõudnud, võime kasutaja sisse logida
 			if($password_error == "" && $email_error == ""){
-				echo "Võib sisse logida! Kasutajanimi on ".$email." ja parool on ".$password;
+				echo "Võib sisse logida! Kasutajanimi on ".$email." ja parool on ".$password. ".";
 				
-				$hash = hash("sha512", $password );
-				loginUser();
+				$hash = hash("sha512", $password);
+				loginUser($email, $hash);
 				
 				
 			
@@ -74,9 +74,9 @@
 				
 				$hash = hash("sha512", $create_password);
 				
-				echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password."ja räsi on".$hash;
-				
-				createUser();
+				echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password. "ja räsi on".$hash;
+				//saadame kaasa muutjuad
+				createUser($create_email, $hash);
 				
 				
 				//asendame ? märgid, ss -s on string email, s on string password
