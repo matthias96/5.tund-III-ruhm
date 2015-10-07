@@ -55,33 +55,22 @@
         
         $stmt->bind_param("iss", $_SESSION['logged_in_user_id'], $car_plate, $car_color);
         
+		//sõnum
         $message = "";
         
    
         if($stmt->execute()){
-      
-            $message = "Edukalt andmebaasi salvestatud!";
-        }
+			//kui on tõene, siis INSERT õnnestus
+            $message = "Sai edukalt lisatud.";
+			
+        }else{
+			//kui on väär, siis error
+			echo $stmt->error;
+			
+		}
         
-        $stmt->close();
-        $mysqli->close();
-    }
-	 function getAllData(){
-        
-        $mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
-        $stmt = $mysqli->prepare("SELECT id, user_id, number_plate, color FROM car_plates");
-        $stmt->bind_result($id_from_db, $user_id_from_db, $number_plate_from_db, $color_from_db);
-        $stmt->execute();
-        
-      
-        
-       
-        while($stmt->fetch()){
-            
-            echo($user_id_from_db);
-            
-        }
-        
+		return $message;
+		
         $stmt->close();
         $mysqli->close();
     }

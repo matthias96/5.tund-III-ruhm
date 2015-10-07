@@ -34,12 +34,14 @@
      
 			if($number_plate_error == "" && $color_error == ""){
 				echo "Salvestatud! Numbrimärk on ".$number_plate." ja värv on ".$color. ".";
-				$m= createNumberPlate($number_plate, $color);
+				$msg= createNumberPlate($number_plate, $color);
 				
-				if($m !=""){
-					
+				if($msg !=""){
+					//õnnestus, teeme inputi väljad tühjaks
 					$number_plate="";
 					$color="";
+					
+					echo $msg;
 				}
 				
 			}
@@ -57,7 +59,7 @@
         return $data;
     }
 	
-	getAllData();
+	
    
  ?> 
  <p>Tere, <?=$_SESSION["logged_in_user_email"];?>
